@@ -289,5 +289,17 @@
     "Reference": "Référence",
     "Colissimo delivery": "Livraison en Colissimo",
     "Total incl. VAT": "Total TTC",
-    "VAT to ": "TVA à "
+    "VAT to ": "TVA à ",
+    "Details of my order": "Détails de ma commande",
+    "Payment method": "Moyen de paiement",
+    "Products": "Produits",
+    "References": "Références",
+    "You were unable to make your credit card payment.": "Vous n'avez pas réussi à effectuer votre paiement par carte bancaire.",
+    "Please contact us.": "Veuillez nous contacter.",
+    "Download invoice": "Télécharger la facture",
+    "Billing address": "Adresse de facturation",
+    "and delivery": "et de livraison",
+    "I chose to pick up my order on site.": "J'ai choisi de venir chercher ma commande sur place.",
+    "Back to orders": "Retour aux commandes",
+    "Delivery address": "Adresse de livraison"
 }
