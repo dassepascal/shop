@@ -239,5 +239,18 @@
     "Environmental protection": "Respect de l'environnement",
     "Administrative mandate": "Mandat administratif",
     "Social medias": "Médias sociaux",
-    "The :attribute must contain at least one uppercase letter, one lowercase letter, one number, and one special character.": "Le :attribute doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère special."
+    "The :attribute must contain at least one uppercase letter, one lowercase letter, one number, and one special character.": "Le :attribute doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère special.",
+    "Your account has been successfully created. An email has been sent to you with all the details.": "Votre compte a bien été crée. Un email vous a ete envoyé avec toutes les informations.",
+    "Your e-mail": "Votre courriel",
+    "Your password": "Votre mot de passe",
+    "Your firstName": "Votre prénom",
+    "Your name": "Votre nom",
+    "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character": "Le mot de passe doit contenir au moins 8 caractères et au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère special.",
+    "Confirm Password": "Confirmez le mot de passe",
+    "Generate a secure password": "Créer un mot de passe securisé",
+    "I would like to receive your newsletter": "Je souhaite recevoir votre newsletter",
+    "I accept the terms and conditions of the privacy policy": "J'accepte les conditions de la politique de confidentialité",
+    "Already registered?": "Vous avez déjà un compte ?",
+    "Required information": "Information requise",
+    "You have been registered": "Vous avez bien été enregistré"
 }
