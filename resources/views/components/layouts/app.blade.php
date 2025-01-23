@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="corporate" > 
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="corporate">
 
 <head>
     <meta charset="utf-8">
@@ -27,6 +27,11 @@
             {{ $slot }}
         </x-slot:content>
     </x-main>
+
+    {{-- FOOTER --}}
+    <hr><br>
+    <livewire:navigation.footer />
+    <br>
 
     {{--  TOAST area --}}
     <x-toast />
