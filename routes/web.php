@@ -20,4 +20,5 @@ Route::prefix('account')->group(function () {
 	Volt::route('/addresses/create', 'account.addresses.create')->name('addresses.create');
 	Volt::route('/addresses/{address}/edit', 'account.addresses.edit')->name('addresses.edit');
 	Volt::route('/orders', 'account.orders.index')->name('orders');
+	Volt::route('/orders/{order}', 'account.orders.show')->name('orders.show');
 });

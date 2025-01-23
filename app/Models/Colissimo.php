@@ -6,6 +6,9 @@ use App\Models\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperColissimo
+ */
 class Colissimo extends Model
 {
     protected $fillable = [

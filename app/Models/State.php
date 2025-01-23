@@ -6,6 +6,9 @@ use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @mixin IdeHelperState
+ */
 class State extends Model
 {
     protected $fillable = [

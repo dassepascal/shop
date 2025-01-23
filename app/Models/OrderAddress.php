@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperOrderAddress
+ */
 class OrderAddress extends Model
 {
     protected $fillable = [
