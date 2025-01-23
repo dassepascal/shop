@@ -238,5 +238,6 @@
     "Privacy policy": "Politique de confidentialité",
     "Environmental protection": "Respect de l'environnement",
     "Administrative mandate": "Mandat administratif",
-    "Social medias": "Médias sociaux"
+    "Social medias": "Médias sociaux",
+    "The :attribute must contain at least one uppercase letter, one lowercase letter, one number, and one special character.": "Le :attribute doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère special."
 }
