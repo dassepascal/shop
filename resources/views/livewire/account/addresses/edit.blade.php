@@ -1,26 +1,30 @@
 <?php
 
-use App\Models\Country;
+use App\Models\{Address, Country};
 use Livewire\Volt\Component;
 use Livewire\Attributes\Title;
 use Mary\Traits\Toast;
 use Illuminate\Support\Collection;
 use App\Traits\ManageAddress;
 
-new #[Title('Create address')] class extends Component {
+new #[Title('Update address')] 
+class extends Component {
     use Toast, ManageAddress;
 
-    public function mount(): void
+    public Address $myAddress;
+
+    public function mount(Address $address): void
     {
+        $this->myAddress = $address;
+        $this->fill($this->myAddress);
         $this->countries = Country::all();
-        $this->country_id = $this->countries->first()->id;
     }
 
     public function save(): void
     {
         $data = $this->validate($this->rules());
-        // Assurez-vous que la civilité est correctement formatée
-        if ($data['civility'] === 'M') {
+         // Assurez-vous que la civilité est correctement formatée
+         if ($data['civility'] === 'M') {
             $data['civility'] = 'M.';
         } elseif ($data['civility'] === 'Mme') {
             $data['civility'] = 'Mme';
@@ -29,12 +33,12 @@ new #[Title('Create address')] class extends Component {
             $data['civility'] = 'M.'; // ou 'Mme' selon votre logique
         }
 
-        Auth::user()->addresses()->create($data);
+        $this->myAddress->update($data);
 
-        $this->success(__('Address created successfully.'), redirectTo: '/account/addresses');
+        $this->success(__('Address updated with success.'), redirectTo: '/account/addresses');
     }
 };
 
 ?>
 
-@include('livewire.account.addresses.components.form', ['title' => __('Create an address')])
+@include('livewire.account.addresses.components.form', ['title' => __('Update an address')])
