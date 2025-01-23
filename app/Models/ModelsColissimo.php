@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ModelsColissimo extends Model
 {
@@ -11,4 +13,9 @@ class ModelsColissimo extends Model
     ];
     
     public $timestamps = false;
+
+    public function country(): BelongsTo
+{
+    return $this->belongsTo(Country::class);
+}
 }
