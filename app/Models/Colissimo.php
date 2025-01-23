@@ -6,7 +6,7 @@ use App\Models\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ModelsColissimo extends Model
+class Colissimo extends Model
 {
     protected $fillable = [
         'price', 'country_id', 'range_id',

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('models_colissimos', function (Blueprint $table) {
+        Schema::create('colissimos', function (Blueprint $table) {
             $table->id();
-    $table->decimal('price');
-    $table->foreignId('country_id')->constrained()->onDelete('cascade');
-    $table->foreignId('range_id')->constrained()->onDelete('cascade');
+            $table->decimal('price');
+            $table->foreignId('country_id')->constrained()->onDelete('cascade');
+            $table->foreignId('range_id')->constrained()->onDelete('cascade');
         });
     }
 
