@@ -314,5 +314,16 @@
     "You are not subscribed to the newsletter.": "Vous n'avez pas souscrit à la lettre d'information.",
     "Orders": "Commandes",
     "Details of the order": "Détails de la commande",
-    "Newsletter": "Lettre d'information"
+    "Newsletter": "Lettre d'information",
+   
+    "Cart": "Panier",
+    "Quantity:": "Quantité :",
+    "Total of my": "Total de mes",
+    "Total of my article": "Total de mon article",
+    "articles": "articles",
+    "Excluding delivery": "Hors livraison",
+    "Trash my cart": "Vider mon panier",
+    "Cart cleaned.": "Panier vidé.",
+    "View my cart": "Voir mon panier",
+    "Item deleted.": "Produit supprimé."
 }
