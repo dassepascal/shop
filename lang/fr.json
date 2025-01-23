@@ -286,5 +286,8 @@
     "FirstName": "Prénom",
     "State": "État",
     "Amount": "Montant",
-    "Reference": "Référence"
+    "Reference": "Référence",
+    "Colissimo delivery": "Livraison en Colissimo",
+    "Total incl. VAT": "Total TTC",
+    "VAT to ": "TVA à "
 }
