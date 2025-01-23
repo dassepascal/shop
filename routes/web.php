@@ -16,4 +16,7 @@ Route::middleware('guest')->group(function () {
 
 Route::prefix('account')->group(function () {
 	Volt::route('/profile', 'account.profile')->name('profile');
+	Volt::route('/addresses', 'account.addresses.index')->name('addresses');
+	Volt::route('/addresses/create', 'account.addresses.create')->name('addresses.create');
+	Volt::route('/addresses/{address}/edit', 'account.addresses.edit')->name('addresses.edit');
 });
