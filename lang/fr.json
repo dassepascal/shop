@@ -332,5 +332,8 @@
     "Item deleted.": "Produit supprimé.",
     "New order": "Nouvelle commande",
     "from": "de",
-    "Order details": "Détails de la commande"
+    "Order details": "Détails de la commande",
+    "Stock alert": "Alerte de stock",
+    "of product": "du produit",
+    "Remaining quantity": "Quantité restante"
 }
