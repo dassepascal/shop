@@ -118,7 +118,7 @@ new class extends Component {
                     <span class="text-black">
                         <x-menu-item title="{{ __('My profile') }}" link="{{ route('profile') }}" />
                         <x-menu-item title="{{ __('My addresses') }}" link="{{ route('addresses') }}" />
-                        <x-menu-item title="{{ __('My orders') }}" link="{{ route('order.index') }}" />
+                        <x-menu-item title="{{ __('My orders') }}" link="{{ route('orders') }}" />
                         <x-menu-item title="{{ __('RGPD') }}" link="{{ route('rgpd') }}" />
                         <x-menu-item title="{{ __('Logout') }}" wire:click="logout" />  
                     </span>                  

@@ -315,9 +315,11 @@
     "Orders": "Commandes",
     "Details of the order": "Détails de la commande",
     "Newsletter": "Lettre d'information",
-   
     "Cart": "Panier",
     "Quantity:": "Quantité :",
+    "I order": "Je commande",
+    "Add to cart": "Ajouter au panier",
+    "Product added to cart.": "Produit ajouté au panier.",
     "Total of my": "Total de mes",
     "Total of my article": "Total de mon article",
     "articles": "articles",
@@ -325,5 +327,7 @@
     "Trash my cart": "Vider mon panier",
     "Cart cleaned.": "Panier vidé.",
     "View my cart": "Voir mon panier",
+    "My cart": "Mon panier",
+    "The cart is empty.": "Le panier est vide.",
     "Item deleted.": "Produit supprimé."
 }
