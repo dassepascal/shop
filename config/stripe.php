@@ -1,7 +1,7 @@
 <?php 
 
 return [
-    'test_public_key'=>env('STRIPE_TEST_PUBLIC_KEY'),
-    'test_secret_key'=>env('STRIPE_TEST_SECRET_KEY'),
+    'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
+    'secret_key' => env('STRIPE_SECRET_KEY'),
 ];
 

@@ -14,6 +14,14 @@ Route::middleware('guest')->group(function () {
 	Volt::route('/forgot-password', 'auth.forgot-password');
 	Volt::route('/reset-password/{token}', 'auth.reset-password')->name('password.reset');
 });
+Route::middleware('auth')->group(function () {
+
+	Route::prefix('order')->group(function () {
+		Volt::route('/creation', 'order.index')->name('order.index');
+		// Volt::route('/confirmation/{id}', 'order.confirmation')->name('order.confirmation');
+		// Volt::route('/card/{id}', 'order.card')->name('order.card');
+	});
+});
 
 
 Route::prefix('account')->group(function () {
@@ -21,7 +29,8 @@ Route::prefix('account')->group(function () {
 	Volt::route('/addresses', 'account.addresses.index')->name('addresses');
 	Volt::route('/addresses/create', 'account.addresses.create')->name('addresses.create');
 	Volt::route('/addresses/{address}/edit', 'account.addresses.edit')->name('addresses.edit');
-	Volt::route('/orders', 'account.orders.index')->name('order.index');
+	Volt::route('/orders', 'account.orders.index')->name('orders');
 	Volt::route('/orders/{order}', 'account.orders.show')->name('orders.show');
 	Volt::route('/rgpd', 'account.rgpd.index')->name('rgpd');
 });
+

@@ -89,7 +89,7 @@ new class extends Component {
             <div class="flex justify-between items-center mt-4">
                 <x-button label="{{ __('Trash my cart') }}" wire:click="cleanCart" icon="o-trash"
                     class="text-red-500 btn-ghost btn-sm" />
-                <x-button label="{{ auth()->check() ? __('I order') : __('Log in to order') }}" icon-right="c-arrow-right" link="" class="btn-primary btn-sm" />
+                <x-button label="{{ auth()->check() ? __('I order') : __('Log in to order') }}" icon-right="c-arrow-right" link="{{route('order.index')}}" class="btn-primary btn-sm" />
             </div>
         @else
             @lang('The cart is empty.')
