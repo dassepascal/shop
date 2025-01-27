@@ -329,5 +329,8 @@
     "View my cart": "Voir mon panier",
     "My cart": "Mon panier",
     "The cart is empty.": "Le panier est vide.",
-    "Item deleted.": "Produit supprimé."
+    "Item deleted.": "Produit supprimé.",
+    "New order": "Nouvelle commande",
+    "from": "de",
+    "Order details": "Détails de la commande"
 }
