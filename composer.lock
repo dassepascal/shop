@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca75123072976c833fecf6bdfd90568f",
+    "content-hash": "21a4a07fc98465350b3d3e530b37ff70",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -82,6 +82,56 @@
                 }
             ],
             "time": "2025-01-21T20:24:00+00:00"
+        },
+        {
+            "name": "bestmomo/nice-artisan",
+            "version": "v1.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bestmomo/nice-artisan.git",
+                "reference": "556f469a16be27823e45d92f9f666d9668a07ecb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bestmomo/nice-artisan/zipball/556f469a16be27823e45d92f9f666d9668a07ecb",
+                "reference": "556f469a16be27823e45d92f9f666d9668a07ecb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^11.0",
+                "php": ">=8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Bestmomo\\NiceArtisan\\NiceArtisanServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bestmomo\\NiceArtisan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bestmomo",
+                    "email": "grandheretique@free.fr",
+                    "homepage": "https://laravel.sillo.org"
+                }
+            ],
+            "description": "Web interface for Laravel Artisan",
+            "homepage": "http://github.com/bestmomo/nice-artisan",
+            "support": {
+                "issues": "https://github.com/bestmomo/nice-artisan/issues",
+                "source": "https://github.com/bestmomo/nice-artisan/tree/v1.8.2"
+            },
+            "time": "2025-01-11T16:53:01+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",

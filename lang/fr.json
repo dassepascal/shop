@@ -394,5 +394,10 @@
 "My order details": "Details de ma commande",
 "Please check your order before validation!": "Veuillez vérifier votre commande avant la validation !",
 "I have read the general terms and conditions of sale and the cancellation policy and accept them unreservedly.": "J'ai lu les conditions générales de vente et les conditions d'annulation et j'y adhère sans réserve.",
-"Order with payment obligation": "Commande avec obligation de paiement"
+"Order with payment obligation": "Commande avec obligation de paiement",
+"Please send us a check with:": "Veuillez nous envoyer un chèque avec :",
+"You have chosen to pay by administrative mandate. This type of payment is reserved for administrations.": "Vous avez choisi de payer par mandat administratif. Ce type de paiement est réservé aux administrations.",
+"Your order is confirmed": "Votre commande est confirmée",
+"Your order will be shipped as soon as this mandate is received.": "Votre commande vous sera envoyée dès réception de votre mandat.",
+"Your order will be shipped as soon as the transfer is received.": "Votre commande vous sera envoyée dès réception du virement."
 }
