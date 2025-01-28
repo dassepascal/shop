@@ -18,8 +18,8 @@ Route::middleware('auth')->group(function () {
 
 	Route::prefix('order')->group(function () {
 		Volt::route('/creation', 'order.index')->name('order.index');
-		// Volt::route('/confirmation/{id}', 'order.confirmation')->name('order.confirmation');
-		// Volt::route('/card/{id}', 'order.card')->name('order.card');
+		 Volt::route('/confirmation/{id}', 'order.confirmation')->name('order.confirmation');
+		 Volt::route('/card/{id}', 'order.card')->name('order.card');
 	});
 });
 

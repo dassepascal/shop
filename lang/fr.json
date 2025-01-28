@@ -399,5 +399,13 @@
 "You have chosen to pay by administrative mandate. This type of payment is reserved for administrations.": "Vous avez choisi de payer par mandat administratif. Ce type de paiement est réservé aux administrations.",
 "Your order is confirmed": "Votre commande est confirmée",
 "Your order will be shipped as soon as this mandate is received.": "Votre commande vous sera envoyée dès réception de votre mandat.",
-"Your order will be shipped as soon as the transfer is received.": "Votre commande vous sera envoyée dès réception du virement."
+"Your order will be shipped as soon as the transfer is received.": "Votre commande vous sera envoyée dès réception du virement.",
+"Your payment has been validated": "Votre paiement a été validé",
+"You can come and pick up your order": "Vous pouvez venir chercher votre commande",
+"Your order will be shipped to you": "Votre commande va vous être envoyée",
+"Your payment has not been validated": "Votre paiement n'a pas été validé",
+"Please contact us": "Veuillez nous contacter",
+
+"You can retrieve your invoice from your account": "Vous pouvez retrouver votre facture dans votre compte",
+"An error occurred while processing your payment.": "Une erreur s'est produite lors du traitement de votre paiement."
 }
