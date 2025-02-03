@@ -3,14 +3,18 @@
 use App\Models\{ Order, Product, User };
 use Livewire\Attributes\{Layout, Title};
 use Livewire\Volt\Component;
+use App\Traits\ManageOrders;
 
 new 
 #[Title('Dashboard')] 
 #[Layout('components.layouts.admin')] 
 class extends Component
 {
+	use ManageOrders;
 
     public bool $openGlance = true;
+    public bool $openOrders = true;
+    public bool $paginationOrders = false;
  
     public function with(): array
 	{
@@ -20,6 +24,11 @@ class extends Component
                                     ->whereRelation('state', 'indice', '<', 6)
                                     ->count(),
 			'usersCount'    => User::count(),
+            'orders'        => Order::with('user', 'state', 'addresses')
+                                    ->orderBy(...array_values($this->sortBy))
+                                    ->take(6)
+                                    ->get(),
+            'headersOrders' => $this->headersOrders(),
 		];
 	}
 
@@ -39,7 +48,7 @@ class extends Component
                     icon="s-shopping-bag"
                     class="shadow-hover" />
             </a>
-            <a href="/" class="flex-grow">
+            <a href="{{ route('admin.orders.index') }}" class="flex-grow">
                 <x-stat 
                     title="{{ __('Successful orders') }}" 
                     description="" 
@@ -57,4 +66,23 @@ class extends Component
             </a>
         </x-slot:content>
     </x-collapse>
+    <br>
+
+    <x-collapse wire:model="openOrders" class="shadow-md">
+        <x-slot:heading>
+            @lang('Latest orders')
+        </x-slot:heading>
+        <x-slot:content>
+            <x-card class="mt-6" title="" shadow separator >
+                @include('livewire.admin.orders.table')
+                <x-slot:actions>
+                    <x-button 
+                        label="{{ __('See all orders') }}" 
+                        class="btn-primary" 
+                        link="{{ route('admin.orders.index') }}" />
+                </x-slot:actions>
+            </x-card>
+        </x-slot:content>
+    </x-collapse>
+
 </div>
