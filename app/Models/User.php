@@ -59,4 +59,10 @@ public function orders(): HasMany
 {
     return $this->hasMany(Order::class);
 }
+
+public function isAdmin(): bool
+{
+    return $this->admin; // Remplacez 'is_admin' par le nom de la colonne dans votre table users
+}
+
 }
