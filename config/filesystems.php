@@ -59,6 +59,10 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'invoices' => [
+        'driver' => 'local',
+        'root' => storage_path('app/invoices'),
+    ],
 
     ],
 
