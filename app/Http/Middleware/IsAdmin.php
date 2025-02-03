@@ -16,9 +16,16 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->user()->isAdmin()) {
+       
+        $user = auth()->user();
+
+        if ($user && !$user->isAdmin()) {
             abort(403);
+        } elseif (!$user) {
+            // If no user is logged in, handle this scenario (e.g., redirect to login)
+            return redirect()->route('login');
         }
+        
         
         return $next($request);
     }

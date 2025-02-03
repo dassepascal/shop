@@ -37,5 +37,6 @@ Route::middleware('auth')->group(function () {
 	Route::middleware(IsAdmin::class)->prefix('admin')->group(function ()
 	{
 		Volt::route('/dashboard', 'admin.index')->name('admin');
+		Volt::route('/orders', 'admin.orders.index')->name('admin.orders.index');
 	});
 });

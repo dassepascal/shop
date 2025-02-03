@@ -62,7 +62,7 @@ public function orders(): HasMany
 
 public function isAdmin(): bool
 {
-    return $this->admin; // Remplacez 'is_admin' par le nom de la colonne dans votre table users
+    return $this->admin ; // Remplacez 'is_admin' par le nom de la colonne dans votre table users
 }
 
 }

@@ -27,6 +27,7 @@ new class() extends Component
         </x-list-item>
         <x-menu-separator />
         <x-menu-item title="{{ __('Dashboard') }}" icon="s-building-office-2" link="{{ route('admin') }}" />
+        <x-menu-item title="{{ __('Orders') }}" icon="s-shopping-bag" link="{{ route('admin.orders.index') }}" />
         <x-menu-item icon="m-arrow-right-end-on-rectangle" title="{{ __('Go on store') }}" link="/" />
         <x-menu-item>
             <x-theme-toggle />
