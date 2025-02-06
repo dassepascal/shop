@@ -457,5 +457,8 @@
     "Click on this image to modify it": "Cliquez sur cette image pour la modifier",
     "Active product": "Produit actif",
     "Weight in kg": "Poids en kg",
-    "Quantity available": "Quantité disponible"
+    "Quantity available": "Quantité disponible",
+    "Product updated successfully.": "Produit mis à jour avec succès.",
+    "Edit a product": "Modification d'un produit",
+    "Product create successfully.": "Produit créé avec succès."
 }
