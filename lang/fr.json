@@ -460,5 +460,17 @@
     "Quantity available": "Quantité disponible",
     "Product updated successfully.": "Produit mis à jour avec succès.",
     "Edit a product": "Modification d'un produit",
-    "Product create successfully.": "Produit créé avec succès."
+    "Product create successfully.": "Produit créé avec succès.",
+    "Store": "Boutique",
+    "Phone": "Téléphone",
+    "Bank": "Banque",
+    "Holder": "Titulaire",
+    "Accepted payment methods": "Moyens de paiement acceptés",
+    "Store updated with success.": "Boutique mise à jour avec succès.",
+    "Shipping costs": "Frais de livraison",
+    "Title": "Titre",
+    "Activation of billing": "Activation de la facturation",
+    "holder": "titulaire",
+    "bank_address": "adresse de la banque"
+    
 }
