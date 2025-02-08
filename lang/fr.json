@@ -481,5 +481,12 @@
     "Blue": "Bleu",
     "Red": "Rouge",
     "Green": "Vert",
-    "Gray": "Gris"
+    "Gray": "Gris",
+    "State created successfully.": "Etat créé avec succès.",
+    "State updated successfully.": "Etat mis à jour avec succès.",
+    "State deleted successfully.": "Etat supprimé avec succès.",
+    "Are you sure you want to delete this address?": "Voulez-vous vraiment supprimer cette adresse ?",
+  
+   
+    "Address created successfully.": "Adresse crée avec succès."
 }
