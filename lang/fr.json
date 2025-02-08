@@ -475,5 +475,11 @@
     "Color": "Couleur",
     "Are you sure you want to delete this state?": "Voulez-vous vraiment supprimer cet état ?",
     "Create a new state": "Création d'un nouvel état de commande",
-    "Order status": "Etats de commande"
-  }
+    "Order status": "Etats de commande",
+    "Enter state name": "Entrez le nom de l'etat de commande",
+    "Enter unique slug": "Entrez un slug unique",
+    "Blue": "Bleu",
+    "Red": "Rouge",
+    "Green": "Vert",
+    "Gray": "Gris"
+}
