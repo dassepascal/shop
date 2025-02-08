@@ -486,7 +486,15 @@
     "State updated successfully.": "Etat mis à jour avec succès.",
     "State deleted successfully.": "Etat supprimé avec succès.",
     "Are you sure you want to delete this address?": "Voulez-vous vraiment supprimer cette adresse ?",
-  
-   
-    "Address created successfully.": "Adresse crée avec succès."
+    "Address created successfully.": "Adresse crée avec succès.",
+    "Enter name": "Entrez le nom",
+    "Enter VAT (e.g., 0.2)": "Entrez la TVA (par exemple, 0.2)",
+    "tax": "TVA",
+    "Create a new country": "Création d'un nouveau pays",
+    "Country created successfully.": "Pays créé avec succès.",
+    "Are you sure to delete this country?": "Voulez-vous vraiment supprimer ce pays ?",
+    "Country deleted successfully.": "Pays supprimé avec succès.",
+    "Countries": "Pays",
+    "Edit a country": "Modification d'un pays",
+    "Country updated successfully.": "Pays mis à jour avec succès."
 }
