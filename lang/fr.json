@@ -496,5 +496,13 @@
     "Country deleted successfully.": "Pays supprimé avec succès.",
     "Countries": "Pays",
     "Edit a country": "Modification d'un pays",
-    "Country updated successfully.": "Pays mis à jour avec succès."
+    "Country updated successfully.": "Pays mis à jour avec succès.",
+    "Create a new page": "Création d'une nouvelle page",
+    "Page created successfully.": "Page crée avec succès.",
+    "Are you sure you want to delete this page?": "Voulez-vous vraiment supprimer cette page ?",
+    "Page deleted successfully.": "Page supprimée avec succès.",
+    "Enter page title": "Entrez le titre de la page",
+    "Text": "Texte",
+    "Edit a page": "Modification d'une page",
+    "Page updated successfully.": "Page mise à jour avec succès."
 }
