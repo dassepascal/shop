@@ -521,5 +521,7 @@
     "Shipments": "Expéditions",
     "Postal rate management": "Gestion des tarifs postaux",
     "Rates": "Tarifs",
-    "Rates saved successfully.": "Tarifs enregistrés avec succès."
+    "Rates saved successfully.": "Tarifs enregistrés avec succès.",
+    "Go to bypass page": "Aller sur la page de passage",
+    "Maintenance mode": "Mode maintenance"
 }

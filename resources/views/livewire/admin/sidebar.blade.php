@@ -50,6 +50,7 @@ new class extends Component {
                     link="{{ route('admin.parameters.shipping.rates') }}" />
             </x-menu-sub>
         </x-menu-sub>
+        <x-menu-item title="{{ __('Maintenance') }}" icon="c-wrench-screwdriver" link="{{ route('admin.maintenance') }}" :class="App::isDownForMaintenance() ? 'bg-red-300' : ''" />
 
         <x-menu-item icon="m-arrow-right-end-on-rectangle" title="{{ __('Go on store') }}" link="/" />
         <x-menu-item>

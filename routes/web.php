@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 		Volt::route('/pages/{page}/edit', 'admin.parameters.pages.edit')->name('admin.parameters.pages.edit');
 		Volt::route('/ranges', 'admin.parameters.shipping.ranges')->name('admin.parameters.shipping.ranges');
 		Volt::route('/rates', 'admin.parameters.shipping.rates')->name('admin.parameters.shipping.rates');
+		Volt::route('/maintenance', 'admin.maintenance')->name('admin.maintenance');
 		
 	});
 });
