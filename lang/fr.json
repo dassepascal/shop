@@ -531,5 +531,12 @@
     "Product out of stock": "Produit hors stock",
     "Coming soon": "Prochainement",
     "In promotion": "En promotion",
-    "Expired": "Expiré"
+    "Expired": "Expiré",
+    "Global promotion": "Promotion globale",
+    "Active promotion": "Promotion active",
+    "Start date": "Date de début",
+    "End date": "Date de fin",
+    "Percentage discount": "Remise en pourcentage",
+    "Enter discount percentage": "Entrez le pourcentage de remise",
+    "Promotion updated successfully.": "Promotion mise à jour avec succès."
 }
