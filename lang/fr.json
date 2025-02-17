@@ -523,5 +523,13 @@
     "Rates": "Tarifs",
     "Rates saved successfully.": "Tarifs enregistrés avec succès.",
     "Go to bypass page": "Aller sur la page de passage",
-    "Maintenance mode": "Mode maintenance"
+    "Maintenance mode": "Mode maintenance",
+    "Promotion price": "Prix de promotion",
+    "Enter product promotion price": "Entrez le prix de promotion du produit",
+    "Promotion start date": "Date de début de la promotion du produit",
+    "Promotion end date": "Date de fin de la promotion du produit",
+    "Product out of stock": "Produit hors stock",
+    "Coming soon": "Prochainement",
+    "In promotion": "En promotion",
+    "Expired": "Expiré"
 }

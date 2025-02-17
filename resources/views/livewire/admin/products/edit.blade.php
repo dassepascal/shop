@@ -20,6 +20,7 @@ class extends Component
     {
         $this->product = $product;
         $this->fill($this->product);
+        $this->promotion = $product->promotion_price != null;
     }
 
     public function save(): void
@@ -29,6 +30,11 @@ class extends Component
         if ($this->image instanceof TemporaryUploadedFile) {
             $path = basename($this->image->store('photos', 'public'));
             $data['image'] = $path;
+        }
+        if(!$this->promotion) {
+            $data['promotion_price'] = null;
+            $data['promotion_start_date'] = null;
+            $data['promotion_end_date'] = null;
         }
 
         $this->product->update($data);

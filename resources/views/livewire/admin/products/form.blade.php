@@ -45,6 +45,31 @@
     />
 
     <x-checkbox label="{{ __('Active product') }}" wire:model="active" />
+    <div class="text-red-500">
+        <x-checkbox label="{{ __('Promotion') }}" wire:model="promotion" wire:change="$refresh" />
+    </div>
+
+    @if($promotion)
+        <x-input 
+            label="{{ __('Promotion price') }}" 
+            wire:model="promotion_price" 
+            placeholder="{{ __('Enter product promotion price') }}"
+        />
+
+        <x-datetime  
+            label="{{ __('Promotion start date') }}" 
+            icon="o-calendar"
+            wire:model="promotion_start_date"
+            type="date"         
+        />
+
+        <x-datetime  
+            label="{{ __('Promotion end date') }}" 
+            icon="o-calendar"
+            wire:model="promotion_end_date"
+            type="date"
+        />
+    @endif
 
     <hr>
     <x-file 
@@ -54,6 +79,9 @@
         accept="image/png, image/jpeg">
         <img src="{{ $image == '' ? asset('storage/ask.jpg') : asset('storage/photos/' . $image) }}" class="h-40" />
     </x-file>
+
+   
+
 
     <x-slot:actions>
         <x-button 
