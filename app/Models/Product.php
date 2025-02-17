@@ -10,6 +10,23 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'name', 'price', 'quantity', 'weight', 'active', 'quantity_alert', 'image', 'description',
+        'name',
+        'price',
+        'quantity',
+        'weight',
+        'active',
+        'quantity_alert',
+        'image',
+        'description',
+        'promotion_price',
+        'promotion_start_date',
+        'promotion_end_date',
     ];
+    protected function casts(): array
+    {
+        return [
+            'promotion_start_date' => 'datetime:Y-m-d',
+            'promotion_end_date' => 'datetime:Y-m-d',
+        ];
+    }
 }
