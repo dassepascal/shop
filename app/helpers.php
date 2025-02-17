@@ -22,4 +22,30 @@ if (!function_exists('__L')) {
 		return transL($key, $replace, $locale);
 	}
 }
+
+if (!function_exists(function: 'bigR')) {	
+	function bigR(float|int $r, $dec = 2, $locale = null): bool|string
+	{
+		$locale ??= substr(Config::get('app.locale'), 0, 2);
+		$fmt = new NumberFormatter(locale: $locale, style: NumberFormatter::DECIMAL);
+
+		// echo "$locale<hr>";
+
+		return $fmt->format(num: round($r, $dec));
+	}
+}
+
+if (!function_exists('ftA')) {
+	function ftA($amount, $locale = null): bool|string
+	{
+		$locale ??= config('app.locale');
+
+		$lang = substr($locale, 0, 2);
+		preg_match('/_([^_]*)$/', $locale, $matches);
+		$currency  = $matches[1] ?? 'EUR';
+		$formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+		$formatted = $formatter->formatCurrency($amount, $currency);
+		return $formatted;
+	}
+}
 }
