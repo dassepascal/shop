@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Http\Tools\Memos;
 use App\Models\Order;
+
 use App\Traits\ManageOrders;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Database\Eloquent\Builder;
+
 
 class OrderService {
 	use ManageOrders;
@@ -17,6 +19,7 @@ class OrderService {
 	public function __construct($params) {
 		$this->sortBy = $params->sortBy;
 		$this->search = $params->search;
+        
 		// Debugbar::addMessage($this->req()->toSql(), 'Req OrderService');
 		// (new Memos())->debugBarTips();
 	}
