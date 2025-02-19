@@ -16,6 +16,17 @@ class extends Component {
     public bool $paginationOrders = false;
     public string $search = ''; // Ajoute cette ligne pour déclarer la propriété $search
 
+
+    public function headersProducts(): array
+    {
+        return [
+            ['key' => 'image', 'label' => ''],
+            ['key' => 'name', 'label' => __('Name')],
+            ['key' => 'quantity_alert', 'label' => __('Quantity alert'), 'class' => 'text-right'],
+            ['key' => 'quantity', 'label' => __('Quantity'), 'class' => 'text-right'],
+        ];
+    }
+
     public function with(): array
     {
         $orders = (new OrderService($this))->req()->take(6)->get();
@@ -45,6 +56,11 @@ class extends Component {
             'promotion' => $promotion,
             'textPromotion' => $textPromotion,
             'headersOrders' => $this->headersOrders(),
+            'productsDown' => Product::whereColumn('quantity', '<=', 'quantity_alert')->orderBy('quantity', 'asc')->get(),
+            'headersProducts' => $this->headersProducts(),
+            'row_decoration' => [
+                'bg-red-400' => fn(Product $product) => $product->quantity == 0,
+            ]
         ];
     }
     // Ajoute cette méthode pour définir setPrettyOrdersIndexes
@@ -92,6 +108,29 @@ class extends Component {
     @endIf
 
     <x-header separator progress-indicator />
+
+    {{--  --}}
+    @if($productsDown->isNotEmpty())
+    <x-collapse class="shadow-md bg-red-500">
+        <x-slot:heading>
+            @lang('Stock alert')
+        </x-slot:heading>       
+        <x-slot:content>
+            <x-card class="mt-6" title="" shadow separator>
+                <x-table striped :rows="$productsDown" :headers="$headersProducts" link="/admin/products/{id}/edit" :row-decoration="$row_decoration" >
+                    @scope('cell_image', $product)
+                        <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
+                    @endscope
+                </x-table>
+                <x-slot:actions>
+                    <x-button label="{{ __('See all products') }}" class="btn-primary" icon="s-list-bullet"
+                        link="{{ route('admin.products.index') }}" />
+                </x-slot:actions>
+            </x-card>
+        </x-slot:content>
+    </x-collapse>
+    <br>
+@endif
 
     <x-collapse wire:model="openOrders" class="shadow-md">
         <x-slot:heading>
