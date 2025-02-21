@@ -541,5 +541,14 @@
     "Promotion updated successfully.": "Promotion mise à jour avec succès.",
     "Quantity alert": "Alerte quantité",
     "See all products": "Voir tous les produits",
-    "in progress": "en cours"
+    "in progress": "en cours",
+    "Modifying a state": "Modification d'un état de commande",
+    "Sales": "Ventes",
+    "Cancelled Orders": "Commandes annulées",
+    "This month": "Ce mois",
+    "Refunded Orders": "Commandes remboursées",
+    "Customer": "client",
+    "Invoice": "Facture",
+    "Total price": "Prix total"
+
 }
