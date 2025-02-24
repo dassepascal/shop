@@ -25,33 +25,7 @@ class extends Component
         $this->success(__('Order deleted successfully.'));
     }
 
-    private function getSalesByMonth(): array
-    {
-        $sales = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
-            ->whereYear('created_at', now()->year)
-            ->whereHas('state', function ($query) {
-                $query->where('name', '!=', 'Annulé') // Exclure les annulées
-                      ->where('name', '!=', 'Remboursé'); // Exclure les remboursées
-                    //   ->where('name', '!=', 'Invoiced'); // Exclure les facturés
-                    //   ->where('name', '!=', 'En cours'); // Exclure les en cours
-            })
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->pluck('total', 'month')
-            ->all();
-
-            // Remplir les mois manquants avec 0
-        $monthlySales = array_fill(1, 12, 0);
-        foreach ($sales as $month => $total) {
-            $monthlySales[$month] = (float) $total;
-        }
-
-        return [
-            'labels' => ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
-            'data' => array_values($monthlySales),
-        ];
-    }
+    
 
     // Nouvelle méthode pour calculer les stats de ventes
     private function getSalesStats(): array
@@ -72,7 +46,7 @@ class extends Component
             'salesTrendIcon' => $isTrendingUp ? 'o-arrow-trending-up' : 'o-arrow-trending-down',
             'salesTrendClass' => $isTrendingUp ? 'text-green-500' : 'text-orange-500',
             'salesTrendColor' => $isTrendingUp ? 'text-green-500' : 'text-orange-500',
-            'salesTooltip' => $isTrendingUp ? __('Sales are up!') : __('Sales are down')
+            'salesTooltip' => $isTrendingUp ? __('Les ventes sont en hausses!') : __('Les ventes sont en baisse!')
         ];
     }
 
@@ -100,7 +74,7 @@ class extends Component
             'cancelledTrendIcon' => $isTrendingUp ? 'o-arrow-trending-up' : 'o-arrow-trending-down',
             'cancelledTrendClass' => $isTrendingUp ? 'text-red-500' : 'text-red-500',
             'cancelledTrendColor' => $isTrendingUp ? 'text-red-500' : 'text-red-500',
-            'cancelledTooltip' => $isTrendingUp ? __('More cancellations this month') : __('Fewer cancellations this month')
+            'cancelledTooltip' => $isTrendingUp ? __('Plus de commande annulé ce mois') : __('Moin de commande annulé ce mois')
         ];
     }
 
@@ -128,7 +102,7 @@ class extends Component
             'refundedTrendIcon' => $isTrendingUp ? 'o-arrow-trending-up' : 'o-arrow-trending-down',
             'refundedTrendClass' => $isTrendingUp ? 'text-red-500' : 'text-orange-500',
             'refundedTrendColor' => $isTrendingUp ? 'text-red-500' : 'text-orange-500',
-            'refundedTooltip' => $isTrendingUp ? __('More refunds this month') : __('Fewer refunds this month')
+            'refundedTooltip' => $isTrendingUp ? __('Plus de commandes remboursées ce mois') : __('Moins de commandes remboursées ce mois')
         ];
     }
 
@@ -139,7 +113,7 @@ class extends Component
         $salesStats = $this->getSalesStats();
         $cancelledStats = $this->getCancelledOrdersStats();
         $refundedStats = $this->getRefundedOrdersStats();
-        $salesData = $this->getSalesByMonth();
+       
 		return [
             'orders' => Order::with('user', 'state', 'addresses')
                 ->orderBy(...array_values($this->sortBy))
@@ -166,8 +140,7 @@ class extends Component
             'refundedTrendClass' => $refundedStats['refundedTrendClass'],
             'refundedTrendColor' => $refundedStats['refundedTrendColor'],
             'refundedTooltip' => $refundedStats['refundedTooltip'],
-            'salesLabels' => $salesData['labels'],
-            'salesData' => $salesData['data'],
+          
 		];
 	}
    
@@ -192,7 +165,7 @@ class extends Component
         </x-slot:actions>
     </x-header>
     
-    <div class="flex space-x-4 mb-8" >
+    <div class="flex space-x-4 mb-10" >
        
         
         <x-stat
@@ -202,7 +175,7 @@ class extends Component
             icon="{{ $salesTrendIcon }}"
             class="{{ $salesTrendClass }}"
             color="{{ $salesTrendColor }}"
-            tooltip-right="{{ $salesTooltip }}" />
+            tooltip-bottom="{{ $salesTooltip }}" />
 
             <x-stat
             title="{{ __('Cancelled Orders') }}"
@@ -211,7 +184,7 @@ class extends Component
             icon="{{ $cancelledTrendIcon }}"
             class="{{ $cancelledTrendClass }}"
             color="{{ $cancelledTrendColor }}"
-            tooltip-right="{{ $cancelledTooltip }}" />
+            tooltip-bottom="{{ $cancelledTooltip }}" />
 
             <x-stat
             title="{{ __('Refunded Orders') }}"
@@ -220,68 +193,13 @@ class extends Component
             icon="{{ $refundedTrendIcon }}"
             class="{{ $refundedTrendClass }}"
             color="{{ $refundedTrendColor }}"
-            tooltip-right="{{ $refundedTooltip }}" />
+            tooltip-bottom="{{ $refundedTooltip }}" />
             
         <!-- Autres stats... -->
     </div>
 
-      <!-- Graphique des ventes -->
-      <div class="mt-6 mb-8">
-        <x-card title="{{ __('Sales by Month') }}">
-            <canvas id="salesChart" height="100"></canvas>
-        </x-card>
-    </div>
     
     @include('livewire.admin.orders.table')
-    @push('scripts')
-    <script>
-        document.addEventListener('livewire:initialized', () => {
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            const salesChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: @json($salesLabels),
-                    datasets: [{
-                        label: 'Ventes (€)',
-                        data: @json($salesData),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Montant (€)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Mois'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    }
-                }
-            });
-
-            // Mettre à jour le graphique quand les données changent
-            Livewire.on('updateChart', () => {
-                salesChart.data.labels = @json($salesLabels);
-                salesChart.data.datasets[0].data = @json($salesData);
-                salesChart.update();
-            });
-        });
-    </script>
-    @endpush
+   
 </div>
 </div>

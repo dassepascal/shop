@@ -550,6 +550,15 @@
     "Customer": "client",
     "Invoice": "Facture",
     "Total price": "Prix total",
-    "Sales by Month": "Ventes par mois"
+    "Sales by month": "Ventes par mois",
+    "Sales are up !": "Les ventes sont en hausse !",
+    "Sales are down !": "Les ventes sont en baisse !",
+    "Cancelled orders are up !": "Les commandes annulées sont en hausse !",
+    "Cancelled orders are down !": "Les commandes annulées sont en baisse !",
+    "Refunded orders are up !": "Les commandes remboursées sont en hausse !",
+    "Refunded orders are down !": "Les commandes remboursées sont en baisse !",
+    "More cancelled this month": "Plus de commandes annulées ce mois",
+    "More refunds this month": "Plus de commandes remboursées ce mois",
+    "Fewer refunds this month": "Moins de commandes remboursées ce mois"
 
 }
