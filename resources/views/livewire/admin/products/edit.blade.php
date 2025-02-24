@@ -45,7 +45,7 @@ class extends Component
 }; ?>
 
 <div>
-    <x-header title="{!! __('Catalog') !!}" separator progress-indicator>
+    <x-header title="{!! __('Catalogue') !!}" separator progress-indicator>
         <x-slot:actions>
             <x-button 
                 icon="s-building-office-2" 
