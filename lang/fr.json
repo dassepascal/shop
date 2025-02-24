@@ -559,6 +559,10 @@
     "Refunded orders are down !": "Les commandes remboursées sont en baisse !",
     "More cancelled this month": "Plus de commandes annulées ce mois",
     "More refunds this month": "Plus de commandes remboursées ce mois",
-    "Fewer refunds this month": "Moins de commandes remboursées ce mois"
-
+    "Fewer refunds this month": "Moins de commandes remboursées ce mois",
+    "Statistics": "Statistiques",
+    "Average basket": "Panier moyen",
+    "Sales revenue": "Chiffre d'affaires",
+    "Most Sold Products": "Produits les plus vendus",
+    "Quantity Sold": "Quantité vendue"
 }

@@ -8,6 +8,9 @@
     <title>{{ isset($title) ? $title . ' | ' . config('app.name') : config('app.name') }}</title>
 
     <script src="{{ asset('storage/scripts/tinymce.min.js') }}" referrerpolicy="origin"></script>
+    @if(Route::currentRouteName() == 'admin.stats')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+@endIf
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

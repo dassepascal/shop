@@ -7,8 +7,7 @@ use App\Models\{Order, Product, User, Setting};
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Livewire\Attributes\{Layout, Title};
 
-new #[Layout('components.layouts.admin')]
-class extends Component {
+new #[Layout('components.layouts.admin')] class extends Component {
     use ManageOrders;
 
     public bool $openGlance = true;
@@ -16,15 +15,9 @@ class extends Component {
     public bool $paginationOrders = false;
     public string $search = ''; // Ajoute cette ligne pour déclarer la propriété $search
 
-
     public function headersProducts(): array
     {
-        return [
-            ['key' => 'image', 'label' => ''],
-            ['key' => 'name', 'label' => __('Name')],
-            ['key' => 'quantity_alert', 'label' => __('Quantity alert'), 'class' => 'text-right'],
-            ['key' => 'quantity', 'label' => __('Quantity'), 'class' => 'text-right'],
-        ];
+        return [['key' => 'image', 'label' => ''], ['key' => 'name', 'label' => __('Name')], ['key' => 'quantity_alert', 'label' => __('Quantity alert'), 'class' => 'text-right'], ['key' => 'quantity', 'label' => __('Quantity'), 'class' => 'text-right']];
     }
 
     public function with(): array
@@ -38,19 +31,19 @@ class extends Component {
         if ($promotion) {
             $now = now();
             if ($now->isBefore($promotion->date1)) {
-                $textPromotion = transL('Coming soon');
+                $textPromotion = trans('Coming soon');
             } elseif ($now->between($promotion->date1, $promotion->date2)) {
                 $textPromotion = trans('in progress');
             } else {
-                $textPromotion = transL('Expired_feminine');
+                $textPromotion = trans('Expired_feminine');
             }
+        } else {
+            $promotion = new Setting(['value' => null, 'date1' => null, 'date2' => null]); // Valeur par défaut
         }
 
         return [
             'productsCount' => Product::count(),
-            'ordersCount' => Order::whereRelation('state', 'indice', '>', 3)
-                                  ->whereRelation('state', 'indice', '<', 6)
-                                  ->count(),
+            'ordersCount' => Order::whereRelation('state', 'indice', '>', 3)->whereRelation('state', 'indice', '<', 6)->count(),
             'usersCount' => User::count(),
             'orders' => $orders->collect(),
             'promotion' => $promotion,
@@ -60,7 +53,7 @@ class extends Component {
             'headersProducts' => $this->headersProducts(),
             'row_decoration' => [
                 'bg-red-400' => fn(Product $product) => $product->quantity == 0,
-            ]
+            ],
         ];
     }
     // Ajoute cette méthode pour définir setPrettyOrdersIndexes
@@ -97,12 +90,15 @@ class extends Component {
         </x-slot:content>
     </x-collapse>
 
-    @if(!is_null($promotion->value))
+    @if (!is_null($promotion) && !is_null($promotion->value))
         <x-card class="mt-6" title="" shadow separator>
-            <x-alert title="{{ __('Global promotion') }} {{ $textPromotion }}" description="{{ __('From') }} {{ $promotion->date1->isoFormat('LL') }} {{ __('to') }} {{ $promotion->date2->isoFormat('LL') }} {{ __L('Percentage discount') }} {{ $promotion->value }}%" icon="o-currency-euro" class="alert-warning" >
-            <x-slot:actions>
-                <x-button label="{{ __('Edit') }}" class="btn-outline" link="{{ route('admin.products.promotion') }}" />
-            </x-slot:actions>
+            <x-alert title="{{ __('Global promotion') }} {{ $textPromotion }}"
+                description="{{ __('From') }} {{ $promotion->date1->isoFormat('LL') }} {{ __('to') }} {{ $promotion->date2->isoFormat('LL') }} {{ __L('Percentage discount') }} {{ $promotion->value }}%"
+                icon="o-currency-euro" class="alert-warning">
+                <x-slot:actions>
+                    <x-button label="{{ __('Edit') }}" class="btn-outline"
+                        link="{{ route('admin.products.promotion') }}" />
+                </x-slot:actions>
             </x-alert>
         </x-card>
     @endIf
@@ -110,27 +106,28 @@ class extends Component {
     <x-header separator progress-indicator />
 
     {{--  --}}
-    @if($productsDown->isNotEmpty())
-    <x-collapse class="shadow-md bg-red-500">
-        <x-slot:heading>
-            @lang('Stock alert')
-        </x-slot:heading>       
-        <x-slot:content>
-            <x-card class="mt-6" title="" shadow separator>
-                <x-table striped :rows="$productsDown" :headers="$headersProducts" link="/admin/products/{id}/edit" :row-decoration="$row_decoration" >
-                    @scope('cell_image', $product)
-                        <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
-                    @endscope
-                </x-table>
-                <x-slot:actions>
-                    <x-button label="{{ __('See all products') }}" class="btn-primary" icon="s-list-bullet"
-                        link="{{ route('admin.products.index') }}" />
-                </x-slot:actions>
-            </x-card>
-        </x-slot:content>
-    </x-collapse>
-    <br>
-@endif
+    @if ($productsDown->isNotEmpty())
+        <x-collapse class="shadow-md bg-red-500">
+            <x-slot:heading>
+                @lang('Stock alert')
+            </x-slot:heading>
+            <x-slot:content>
+                <x-card class="mt-6" title="" shadow separator>
+                    <x-table striped :rows="$productsDown" :headers="$headersProducts" link="/admin/products/{id}/edit"
+                        :row-decoration="$row_decoration">
+                        @scope('cell_image', $product)
+                            <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
+                        @endscope
+                    </x-table>
+                    <x-slot:actions>
+                        <x-button label="{{ __('See all products') }}" class="btn-primary" icon="s-list-bullet"
+                            link="{{ route('admin.products.index') }}" />
+                    </x-slot:actions>
+                </x-card>
+            </x-slot:content>
+        </x-collapse>
+        <br>
+    @endif
 
     <x-collapse wire:model="openOrders" class="shadow-md">
         <x-slot:heading>
