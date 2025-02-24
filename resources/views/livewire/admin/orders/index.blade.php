@@ -25,6 +25,34 @@ class extends Component
         $this->success(__('Order deleted successfully.'));
     }
 
+    private function getSalesByMonth(): array
+    {
+        $sales = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
+            ->whereYear('created_at', now()->year)
+            ->whereHas('state', function ($query) {
+                $query->where('name', '!=', 'Annulé') // Exclure les annulées
+                      ->where('name', '!=', 'Remboursé'); // Exclure les remboursées
+                    //   ->where('name', '!=', 'Invoiced'); // Exclure les facturés
+                    //   ->where('name', '!=', 'En cours'); // Exclure les en cours
+            })
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->pluck('total', 'month')
+            ->all();
+
+            // Remplir les mois manquants avec 0
+        $monthlySales = array_fill(1, 12, 0);
+        foreach ($sales as $month => $total) {
+            $monthlySales[$month] = (float) $total;
+        }
+
+        return [
+            'labels' => ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+            'data' => array_values($monthlySales),
+        ];
+    }
+
     // Nouvelle méthode pour calculer les stats de ventes
     private function getSalesStats(): array
     {
@@ -111,6 +139,7 @@ class extends Component
         $salesStats = $this->getSalesStats();
         $cancelledStats = $this->getCancelledOrdersStats();
         $refundedStats = $this->getRefundedOrdersStats();
+        $salesData = $this->getSalesByMonth();
 		return [
             'orders' => Order::with('user', 'state', 'addresses')
                 ->orderBy(...array_values($this->sortBy))
@@ -137,6 +166,8 @@ class extends Component
             'refundedTrendClass' => $refundedStats['refundedTrendClass'],
             'refundedTrendColor' => $refundedStats['refundedTrendColor'],
             'refundedTooltip' => $refundedStats['refundedTooltip'],
+            'salesLabels' => $salesData['labels'],
+            'salesData' => $salesData['data'],
 		];
 	}
    
@@ -193,6 +224,64 @@ class extends Component
             
         <!-- Autres stats... -->
     </div>
+
+      <!-- Graphique des ventes -->
+      <div class="mt-6 mb-8">
+        <x-card title="{{ __('Sales by Month') }}">
+            <canvas id="salesChart" height="100"></canvas>
+        </x-card>
+    </div>
     
     @include('livewire.admin.orders.table')
+    @push('scripts')
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @json($salesLabels),
+                    datasets: [{
+                        label: 'Ventes (€)',
+                        data: @json($salesData),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Montant (€)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Mois'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            // Mettre à jour le graphique quand les données changent
+            Livewire.on('updateChart', () => {
+                salesChart.data.labels = @json($salesLabels);
+                salesChart.data.datasets[0].data = @json($salesData);
+                salesChart.update();
+            });
+        });
+    </script>
+    @endpush
+</div>
 </div>
