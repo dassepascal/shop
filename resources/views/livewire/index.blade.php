@@ -31,25 +31,38 @@ new class extends Component
         @foreach ($products as $product)
         @php
         $bestPrice = getBestPrice($product);
-        $titleContent = '<span class="line-through">' . number_format($product->price, 2, ',', ' ') . ' € TTC</span> <span class="text-red-500">' . number_format($bestPrice, 2, ',', ' ') . ' € TTC</span>';
+        if($bestPrice === $product->price){
+            $titleContent = '<span class="line-through">' . number_format($product->price, 2, ',', ' ') . ' € TTC</span> <span class="text-red-500">' . number_format($bestPrice, 2, ',', ' ') . ' € TTC</span>';
+        }else {
+            $titleContent =
+                '<span class="line-through">' .
+                number_format($product->price, 2, ',', ' ') .
+                ' € TTC</span> <span class="text-red-500">' .
+                number_format($bestPrice, 2, ',', ' ') .
+                ' € TTC</span>';
+        }
+        
     @endphp
-            <x-card
-                class="shadow-md transition duration-500 ease-in-out shadow-gray-500 hover:shadow-xl hover:shadow-gray-500">
-                title="{!! $titleContent !!}"<br>
-                {!! $product->name !!} 
-                @unless($product->quantity)
-                    <br><span class="text-red-500">@lang('Product out of stock')</span>
-                @endunless
-                @if ($product->image)
-                    <x-slot:figure>
-                        @if($product->quantity)
-                            <a href="{{ route('products.show',$product)}}">
-                        @endif
-                            <img src="{{ asset('storage/photos/' . $product->image) }}" alt="{!! $product->name !!}" />
-                        @if($product->quantity) </a> @endif
-                    </x-slot:figure>
-                @endif
-            </x-card>
+          <x-card
+          class="shadow-md transition duration-500 ease-in-out shadow-gray-500 hover:shadow-xl hover:shadow-gray-500 flex flex-col justify-between">
+              {!! $titleContent !!}<br>
+              <b>{!! $product->name !!}</b>
+              @unless ($product->quantity)
+              <br><span class="text-red-500">@lang('Product out of stock')</span>
+              @endunless
+  
+          @if ($product->image)
+              <x-slot:figure>
+                  @if ($product->quantity)
+                      <a href="{{ route('products.show', $product) }}">
+                  @endif
+                  <img src="{{ asset('storage/photos/' . $product->image) }}" alt="{!! $product->name !!}" />
+                  @if ($product->quantity)
+                      </a>
+                  @endif
+              </x-slot:figure>
+          @endif
+      </x-card>
         @endforeach
     </div>
     <br>
