@@ -11,6 +11,7 @@ use App\Models\Range;
 use App\Models\State;
 use App\Models\Address;
 use App\Models\Country;
+use App\Models\Feature;
 use App\Models\Product;
 use App\Models\Colissimo;
 use Illuminate\Database\Seeder;
@@ -69,7 +70,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()
-          ->count(20)  
+          ->count(20)
           ->create()
           ->each(function ($user) {
               $user->addresses()->createMany(
@@ -80,7 +81,7 @@ class DatabaseSeeder extends Seeder
         $user = User::find(1);
         $user->admin = true;
         $user->save();
-   
+
         foreach ([
             ['name' => 'Montre', 'price' => 56, 'weight' => 0.3, 'active' => true, 'quantity' => 100, 'quantity_alert' => 10, 'image' => 'montre.png', 'description' => 'Superbe montre de luxe automatique.'],
             ['name' => 'Lunettes', 'price' => 75, 'weight' => 0.3, 'active' => true, 'quantity' => 100, 'quantity_alert' => 10, 'image' => 'lunettes.png', 'description' => 'Superbe paire de lunettes de soleil.'],
@@ -119,14 +120,14 @@ class DatabaseSeeder extends Seeder
               if(mt_rand(0, 1)) {
                   $address = $order->user->addresses()->skip(1)->take(1)->get()->makeHidden(['id', 'user_id'])->toArray();
                   $address[0]['facturation'] = false;
-                  $order->addresses()->create($address[0]);                 
-              } 
+                  $order->addresses()->create($address[0]);
+              }
               $countryId = $address[0]['country_id'];
               $total = 0;
               $product = Product::find(mt_rand(1, 3));
               $quantity = mt_rand(1, 3);
               $price = $product->price * $quantity;
-              $total = $price; 
+              $total = $price;
               $order->products()->create(
                   [
                       'name' => $product->name,
@@ -145,7 +146,7 @@ class DatabaseSeeder extends Seeder
                           'total_price_gross' => $price,
                           'quantity' => $quantity,
                       ]
-                  ); 
+                  );
               }
               if($order->payment === 'carte' && $order->state_id === 8) {
                   $order->payment_infos()->create(['payment_id' => (string) str()->uuid()]);
@@ -154,6 +155,7 @@ class DatabaseSeeder extends Seeder
               $order->total = $total;
               $order->save();
         });
+        
     }
     }
 

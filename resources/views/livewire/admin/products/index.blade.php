@@ -1,10 +1,11 @@
 <?php
 
-use Livewire\Volt\Component;
-use Livewire\Attributes\{Layout, Title};
-use App\Models\Product;
 use Mary\Traits\Toast;
+use App\Models\Feature;
+use App\Models\Product;
+use Livewire\Volt\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\{Layout, Title};
 
 new #[Layout('components.layouts.admin')] class extends Component {
     use Toast, WithPagination;
@@ -15,7 +16,12 @@ new #[Layout('components.layouts.admin')] class extends Component {
     ];
 
     public int $perPage = 10;
+    public $availableFeatures; // Propriété publique
 
+    public function mount(): void
+    {
+        $this->availableFeatures = Feature::all(); // Initialisation
+    }
     public function headers(): array
     {
         return [
@@ -29,24 +35,29 @@ new #[Layout('components.layouts.admin')] class extends Component {
     }
 
     public function deleteProduct(int $id): void
-{
-    $product = Product::findOrFail($id);
-    $product->delete();
-    $this->success(__('Product deleted successfully.'));
-    $this->resetPage();
-}
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        $this->success(__('Product deleted successfully.'));
+        $this->resetPage();
+    }
     public function updated($property): void
     {
         if (! is_array($property) && $property != "") {
             $this->resetPage();
         }
-    } 
+    }
 
     public function with(): array
     {
+
+
         return [
-            'products' => Product::orderBy(...array_values($this->sortBy))->paginate($this->perPage),
-            'headers'  => $this->headers(),
+            'products' => Product::with('features') // Charger les caractéristiques
+                ->orderBy(...array_values($this->sortBy))
+                ->paginate($this->perPage),
+            'headers' => $this->headers(),
+           'availableFeatures' => $this->availableFeatures,
         ];
     }
 }; ?>
@@ -57,58 +68,59 @@ new #[Layout('components.layouts.admin')] class extends Component {
         <x-slot:actions>
             <x-button icon="s-building-office-2" label="{{ __('Dashboard') }}" class="btn-outline lg:hidden"
                 link="{{ route('admin') }}" />
-                <x-button icon="o-currency-euro" label="{!! __('Global promotion') !!}" link="/admin/products/promotion" spinner class="btn-success" />
+            <x-button icon="o-currency-euro" label="{!! __('Global promotion') !!}" link="/admin/products/promotion" spinner class="btn-success" />
             <x-button icon="o-plus" label="{!! __('Create a new product') !!}" link="/admin/products/create" spinner class="btn-primary" />
         </x-slot:actions>
     </x-header>
 
     <x-card>
         <x-table striped :headers="$headers" :rows="$products" :sort-by="$sortBy" per-page="perPage" with-pagination
-            link="/admin/products/{id}/edit" >
+            link="/admin/products/{id}/edit">
             @scope('cell_image', $product)
-                <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
+            <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
             @endscope
 
             @scope('cell_price', $product)
-                {{ ftA($product->price) }}
+            {{ ftA($product->price) }}
             @endscope
 
             @scope('cell_active', $product)
-                @if ($product->active)
-                    <x-icon name="o-check-circle" class='text-green-400 w-7' />
-                @else
-                    <x-icon name="o-x-circle" class='text-orange-400 w-7' />
-                @endif
+            @if ($product->active)
+            <x-icon name="o-check-circle" class='text-green-400 w-7' />
+            @else
+            <x-icon name="o-x-circle" class='text-orange-400 w-7' />
+            @endif
             @endscope
+
 
             @scope('cell_quantity', $product)
-                @if($product->quantity < $product->quantity_alert)
-                    <x-badge class="p-3 my-4 badge-error" value="{{ bigR($product->quantity, 0) }}" />
+            @if($product->quantity < $product->quantity_alert)
+                <x-badge class="p-3 my-4 badge-error" value="{{ bigR($product->quantity, 0) }}" />
                 @else
-                    {{ bigR($product->quantity, 0) }}
+                {{ bigR($product->quantity, 0) }}
                 @endif
-            @endscope
+                @endscope
 
-            @scope('cell_promotion_price', $product)
+                @scope('cell_promotion_price', $product)
                 @if($product->promotion_price)
-                    @if(now()->isBefore($product->promotion_start_date))
-                        <x-badge class="p-3 my-4 badge-info" value="{{ trans('Coming soon') }}" />
-                    @elseif(now()->between($product->promotion_start_date, $product->promotion_end_date))
-                        <x-badge class="p-3 my-4 badge-success" value="{{ trans('In promotion') }}" />
-                    @else
-                        <x-badge class="p-3 my-4 badge-error" value="{{ trans('Expired') }}" />
-                    @endIf
-                    <span class="{{ now()->between($product->promotion_start_date, $product->promotion_end_date) ? 'text-red-500' : ''}} ml-2">
-                        {{ $product->promotion_price }} €
-                    </span>
-                    <br>
-                    <span class="whitespace-nowrap">
-                        {{ $product->promotion_start_date->isoFormat('LL') }} - {{ $product->promotion_end_date->isoFormat('LL') }}
-                    </span>
+                @if(now()->isBefore($product->promotion_start_date))
+                <x-badge class="p-3 my-4 badge-info" value="{{ trans('Coming soon') }}" />
+                @elseif(now()->between($product->promotion_start_date, $product->promotion_end_date))
+                <x-badge class="p-3 my-4 badge-success" value="{{ trans('In promotion') }}" />
+                @else
+                <x-badge class="p-3 my-4 badge-error" value="{{ trans('Expired') }}" />
+                @endIf
+                <span class="{{ now()->between($product->promotion_start_date, $product->promotion_end_date) ? 'text-red-500' : ''}} ml-2">
+                    {{ $product->promotion_price }} €
+                </span>
+                <br>
+                <span class="whitespace-nowrap">
+                    {{ $product->promotion_start_date->isoFormat('LL') }} - {{ $product->promotion_end_date->isoFormat('LL') }}
+                </span>
                 @endif
-            @endscope
+                @endscope
 
-            @scope('actions', $product)
+                @scope('actions', $product)
                 <x-popover>
                     <x-slot:trigger>
                         <x-button icon="o-trash" wire:click="deleteProduct({{ $product->id ?? ''}})"
@@ -119,7 +131,7 @@ new #[Layout('components.layouts.admin')] class extends Component {
                         @lang('Delete')
                     </x-slot:content>
                 </x-popover>
-            @endscope
+                @endscope
         </x-table>
     </x-card>
 </div>
