@@ -11,14 +11,15 @@ new class extends Component {
     public int $quantity = 1;
     public bool $hasPromotion = false;
     public float $bestPrice = 0;
-    
+
     public function mount(Product $product): void
     {
         if (!$product->active) {
             abort(404);
         }
 
-        $this->product = $product;
+        // Charger le produit avec ses caractéristiques
+        $this->product = $product->load('features');
 
         $this->bestPrice = getBestPrice($product);
         $this->hasPromotion = $this->bestPrice < $product->price;
@@ -30,21 +31,33 @@ new class extends Component {
             'id' => $this->product->id,
             'name' => $this->product->name,
             'price' => $this->bestPrice,
-            'quantity' => $this->quantity,            
+            'quantity' => $this->quantity,
             'attributes' => ['image' => $this->product->image],
             'associatedModel' => $this->product,
         ]);
 
-        $this->dispatch('cart-updated'); 
+        $this->dispatch('cart-updated');
 
         $this->info(__('Product added to cart.'), position: 'bottom-end');
     }
-}; ?>
+};
+?>
 
 <div class="container p-5 mx-auto">
     <div class="grid gap-10 lg:grid-cols-2">
         <div>
             <img class="mx-auto" src="{{ asset('storage/photos/' . $product->image) }}" alt="{{ $product->name }}" />
+            <!-- Bloc des caractéristiques -->
+            @if($product->features->isNotEmpty())
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold">{{ __('Features') }}</h3>
+                    <ul class="list-disc list-inside">
+                        @foreach($product->features as $feature)
+                            <li>{{ $feature->name }} : {{ $feature->pivot->value }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
         <div>
             <div class="text-2xl font-bold">{{ $product->name }}</div>
@@ -60,7 +73,7 @@ new class extends Component {
 
             <p class="mb-4">{{ $product->description }}</p>
             <x-input class="!w-[80px]" wire:model="quantity" type="number" min="1" label="{{ __('Quantity')}}" />
-            <x-button class="mt-4 btn-primary" wire:click="save" icon="o-shopping-cart" spinner >{{ __('Add to cart')}}</x-button>
+            <x-button class="mt-4 btn-primary" wire:click="save" icon="o-shopping-cart" spinner>{{ __('Add to cart')}}</x-button>
         </div>
     </div>
 </div>
