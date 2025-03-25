@@ -26,7 +26,7 @@ class AppBrand extends Component
                 <!-- Hidden when collapsed -->
                 <div {{ $attributes->class(["hidden-when-collapsed"]) }}>
                     <div class="">
-                        <img src="{{ asset('storage/photos/logo1.png') }}" alt="" class="h-auto w-26 sm:w-32 md:w-40 lg:w-48 xl:w-56">
+                        <img src="{{ asset('storage/photos/wp-logo.jpg') }}" alt="" class="h-auto w-26 sm:w-32 md:w-40 lg:w-48 xl:w-56">
                     </div>
                 </div>
 
