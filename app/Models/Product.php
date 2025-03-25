@@ -22,6 +22,20 @@ class Product extends Model
         'promotion_start_date',
         'promotion_end_date',
     ];
+
+
+    /**
+     * Get the features associated with the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+
+    public function features()
+    {
+        return $this->belongsToMany(Feature::class, 'feature_product')
+                    ->withPivot('value')
+                    ->withTimestamps();
+    }
     protected function casts(): array
     {
         return [

@@ -3,7 +3,7 @@
 namespace App\Traits;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-trait ManageProduct 
+trait ManageProduct
 {
     public string $name = '';
     public TemporaryUploadedFile|string|null $image = null;
@@ -17,6 +17,7 @@ trait ManageProduct
     public ?float $promotion_price = null;
     public ?string $promotion_start_date = null;
     public ?string $promotion_end_date = null;
+    public array $features = [];
 
     protected function validateProductData(array $additionalData = []): array
     {
@@ -32,8 +33,23 @@ trait ManageProduct
             'promotion_price' => 'required_if:promotion,true|nullable|numeric|min:0|regex:/^(\d+(?:[\.\,]\d{1,2})?)$/|lt:price',
             'promotion_start_date' => 'required_if:promotion,true|nullable|date',
             'promotion_end_date' => 'required_if:promotion,true|nullable|date|after:promotion_start_date',
+             // Règles pour les caractéristiques
+             'features' => 'array',
+             'features.*' => 'required|string|max:255',
         ];
 
         return $this->validate(array_merge($rules, $additionalData));
+    }
+
+    // Méthode pour sauvegarder les caractéristiques
+    public function saveFeatures($product)
+    {
+        $syncData = [];
+        foreach ($this->features as $featureId => $value) {
+            if (!empty($value)) {
+                $syncData[$featureId] = ['value' => $value];
+            }
+        }
+        $product->features()->sync($syncData);
     }
 }
