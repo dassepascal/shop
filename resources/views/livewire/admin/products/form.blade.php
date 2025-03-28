@@ -3,6 +3,7 @@
 
     <x-textarea label="{{ __('Description') }}" wire:model="description" placeholder="{!! __('Enter product description') !!}"
         rows="5" required />
+
     @foreach ($availableFeatures as $feature)
         <x-input label="{{ $feature->name }}" wire:model="features.{{ $feature->id }}"
             placeholder="Valeur pour {{ $feature->name }}" />
@@ -36,13 +37,39 @@
     @endif
 
     <hr>
-    <x-file wire:model="image" label="{{ __('Image') }}" hint="{!! __('Click on this image to modify it') !!}"
-        accept="image/png, image/jpeg">
-        <img src="{{ $image == '' ? asset('storage/ask.jpg') : asset('storage/photos/' . $image) }}" class="h-40" />
-    </x-file>
 
+    <!-- Gestion des images multiples -->
+    <div class="my-4">
+        <label class="block text-sm font-medium text-gray-700">{{ __('Images') }}</label>
 
+        <!-- Affichage des images existantes -->
+        @if($existingImages && $existingImages->isNotEmpty())
+            <div class="flex flex-wrap gap-4 mb-4">
+                @foreach($existingImages as $image)
+                    <div class="relative">
+                        <img src="{{ asset('storage/photos/' . $image->image) }}" class="h-40 rounded" alt="{{ __('Product image') }}">
+                        <x-button
+                            icon="o-trash"
+                            wire:click="$set('images', array_filter($images, fn($img) => $img !== '{{ $image->image }}'))"
+                            class="absolute top-0 right-0 text-red-500 btn-ghost btn-sm"
+                        />
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-gray-500">{{ __('No images yet.') }}</p>
+        @endif
 
+        <!-- Champ pour uploader plusieurs images -->
+        <input
+            type="file"
+            wire:model="images"
+            multiple
+            accept="image/png,image/jpeg"
+            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+        <small class="text-gray-500">{!! __('Click to upload multiple images') !!}</small>
+    </div>
 
     <x-slot:actions>
         <x-button label="{{ __('Save') }}" icon="o-paper-airplane" spinner="save" type="submit"

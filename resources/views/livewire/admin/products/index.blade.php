@@ -25,7 +25,7 @@ new #[Layout('components.layouts.admin')] class extends Component {
     public function headers(): array
     {
         return [
-            ['key' => 'image', 'label' => __('Image')],
+            ['key' => 'images', 'label' => __('Images')],
             ['key' => 'name', 'label' => __('Name')],
             ['key' => 'price', 'label' => __('Price incl. VAT'), 'class' => 'text-right'],
             ['key' => 'active', 'label' => __('Active'), 'class' => 'text-center'],
@@ -53,7 +53,7 @@ new #[Layout('components.layouts.admin')] class extends Component {
 
 
         return [
-            'products' => Product::with('features') // Charger les caractéristiques
+            'products' => Product::with('features','images') // Charger les caractéristiques
                 ->orderBy(...array_values($this->sortBy))
                 ->paginate($this->perPage),
             'headers' => $this->headers(),
@@ -76,8 +76,23 @@ new #[Layout('components.layouts.admin')] class extends Component {
     <x-card>
         <x-table striped :headers="$headers" :rows="$products" :sort-by="$sortBy" per-page="perPage" with-pagination
             link="/admin/products/{id}/edit">
-            @scope('cell_image', $product)
-            <img src="{{ asset('storage/photos/' . $product->image) }}" width="60" alt="">
+            @scope('cell_images', $product)
+            @if ($product->images->isNotEmpty())
+            <div class="flex flex-wrap gap-2">
+                @foreach ($product->images as $image)
+                @if ($image->image)
+                <img src="{{ asset('storage/photos/' . $image->image) }}"
+                    width="60"
+                    alt="{{ $product->title }} - Image"
+                    class="rounded">
+                @endif
+                @endforeach
+            </div>
+            @else
+            <img src="{{ asset('images/ask.png') }}"
+                width="60"
+                alt="Image par défaut">
+            @endif
             @endscope
 
             @scope('cell_price', $product)

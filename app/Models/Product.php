@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin IdeHelperProduct
@@ -21,6 +22,7 @@ class Product extends Model
         'promotion_price',
         'promotion_start_date',
         'promotion_end_date',
+        'unique_id',
     ];
 
 
@@ -43,4 +45,9 @@ class Product extends Model
             'promotion_end_date' => 'datetime:Y-m-d',
         ];
     }
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImages::class, 'product_unique_id', 'unique_id');
+    }
+
 }
