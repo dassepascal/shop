@@ -69,6 +69,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Remboursé', 'slug' => 'rembourse', 'color' => 'red', 'indice' => 6],
         ]);
 
+        Feature::insert([
+            ['name' => 'Diamètre'],
+            ['name' => 'Peau'],
+            ['name' => 'Couleur'],
+            ['name' => 'Matière'],
+
+        ]);
+
         User::factory()
           ->count(20)
           ->create()
@@ -155,7 +163,7 @@ class DatabaseSeeder extends Seeder
               $order->total = $total;
               $order->save();
         });
-        
+
     }
     }
 
