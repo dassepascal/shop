@@ -7,7 +7,7 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'products' => Product::whereActive(true)->get(),
+            'products' => Product::whereActive(true)->with('images')->get(), // Charger les images
         ];
     }
 }; ?>
@@ -24,32 +24,31 @@ new class extends Component {
         @foreach ($products as $product)
             @php
             $bestPrice = getBestPrice($product);
-            $hasPromotion = $bestPrice < $product->price; // Vérifie si une promotion est active
+            $hasPromotion = $bestPrice < $product->price;
             if ($hasPromotion) {
                 $titleContent = '<span class="line-through">' . number_format($product->price, 2, ',', ' ') . ' € TTC</span> <span class="text-red-500">' . number_format($bestPrice, 2, ',', ' ') . ' € TTC</span>';
             } else {
                 $titleContent = '<span>' . number_format($product->price, 2, ',', ' ') . ' € TTC</span>';
             }
+            $firstImage = $product->images->first()?->image ?? 'ask.png'; // Première image ou image par défaut
             @endphp
             <x-card class="shadow-md transition duration-500 ease-in-out shadow-gray-500 hover:shadow-xl hover:shadow-gray-500 flex flex-col justify-between">
                 <b>{!! $product->name !!} :</b>
                 {!! $titleContent !!}<br>
-               
+
                 @unless ($product->quantity)
                     <br><span class="text-red-500">@lang('Product out of stock')</span>
                 @endunless
-    
-                @if ($product->image)
-                    <x-slot:figure>
-                        @if ($product->quantity)
-                            <a href="{{ route('products.show', $product) }}">
-                        @endif
-                        <img src="{{ asset('storage/photos/' . $product->image) }}" alt="{!! $product->name !!}" />
-                        @if ($product->quantity)
-                            </a>
-                        @endif
-                    </x-slot:figure>
-                @endif
+
+                <x-slot:figure>
+                    @if ($product->quantity)
+                        <a href="{{ route('products.show', $product) }}">
+                    @endif
+                    <img src="{{ asset('storage/photos/' . $firstImage) }}" alt="{!! $product->name !!}" class="max-h-40 rounded" />
+                    @if ($product->quantity)
+                        </a>
+                    @endif
+                </x-slot:figure>
             </x-card>
         @endforeach
     </div>
