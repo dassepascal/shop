@@ -10,71 +10,64 @@ use Livewire\Attributes\{Layout, Title};
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-new
-#[Title('Product edition')]
-#[Layout('components.layouts.admin')]
-class extends Component
-{
+new #[Title('Product edition')] #[Layout('components.layouts.admin')] class extends Component {
     use Toast, ManageProduct, WithFileUploads;
 
     public Product $product;
     public $availableFeatures;
-    public $images = []; // Propriété pour gérer un tableau d'images uploadées
+    public $existingImagesToKeep = [];
 
     public function mount(Product $product): void
     {
         $this->product = $product;
-        $this->fill($this->product); // Remplir les champs avec les données du produit
+        $this->fill($this->product);
         $this->promotion = $product->promotion_price != null;
 
-        // Initialiser les features disponibles
         $this->availableFeatures = Feature::all();
-
-        // Charger les caractéristiques existantes du produit dans $features
         $this->features = $product->features->pluck('pivot.value', 'id')->toArray();
+        $this->existingImagesToKeep = $product->images->pluck('image')->toArray();
+        $this->images = [];
+    }
 
-        // Charger les images existantes (optionnel, si vous voulez les afficher)
-        $this->images = $product->images->pluck('image')->toArray();
+    public function removeImage(string $imageName): void
+    {
+        $key = array_search($imageName, $this->existingImagesToKeep);
+        if ($key !== false) {
+            unset($this->existingImagesToKeep[$key]);
+            $this->existingImagesToKeep = array_values($this->existingImagesToKeep); // Réindexer le tableau
+        }
+        // dd('After removal:', $this->existingImagesToKeep); // Débogage
     }
 
     public function save(): void
     {
         $data = $this->validateProductData();
 
-        // Supprimer les données de promotion si elle n'est pas activée
         if (!$this->promotion) {
             $data['promotion_price'] = null;
             $data['promotion_start_date'] = null;
             $data['promotion_end_date'] = null;
         }
 
-        // Mettre à jour le produit (on ne gère plus une seule image ici)
         $this->product->update($data);
 
-        // Gestion des images multiples
+        $existingImages = $this->product->images->pluck('image')->toArray();
+        $imagesToDelete = array_diff($existingImages, $this->existingImagesToKeep);
+        if (!empty($imagesToDelete)) {
+            $this->product->images()->whereIn('image', $imagesToDelete)->delete();
+        }
+
         if (!empty($this->images)) {
-            $existingImages = $this->product->images->pluck('image')->toArray();
-
-            // Supprimer les anciennes images qui ne sont plus dans $this->images
-            $this->product->images()->whereNotIn('image', array_filter($this->images, 'is_string'))->delete();
-
-            // Ajouter les nouvelles images uploadées
             foreach ($this->images as $image) {
                 if ($image instanceof TemporaryUploadedFile) {
                     $path = $image->store('photos', 'public');
                     $this->product->images()->create([
                         'image' => basename($path),
                     ]);
-                } elseif (is_string($image) && !in_array($image, $existingImages)) {
-                    // Si c'est une chaîne et qu'elle n'existait pas déjà, l'ajouter
-                    $this->product->images()->create([
-                        'image' => $image,
-                    ]);
                 }
             }
         }
 
-        // Sauvegarder les caractéristiques
         $this->saveFeatures($this->product);
 
         $this->success(__('Product updated successfully.'), redirectTo: '/admin/products');
@@ -84,14 +77,8 @@ class extends Component
     {
         return [
             'availableFeatures' => $this->availableFeatures,
-            'existingImages' => $this->product->images, // Passer les images existantes à la vue
+            'existingImages' => $this->product->images,
         ];
-    }
-
-    // Définir la relation dans le composant (bien que normalement dans le modèle Product)
-    public function images(): HasMany
-    {
-        return $this->product->hasMany(\App\Models\ProductImages::class, 'product_unique_id', 'unique_id');
     }
 };
 ?>
@@ -99,12 +86,8 @@ class extends Component
 <div>
     <x-header title="{!! __('Catalogue') !!}" separator progress-indicator>
         <x-slot:actions>
-            <x-button
-                icon="s-building-office-2"
-                label="{{ __('Dashboard') }}"
-                class="btn-outline lg:hidden"
-                link="{{ route('admin') }}"
-            />
+            <x-button icon="s-building-office-2" label="{{ __('Dashboard') }}" class="btn-outline lg:hidden"
+                link="{{ route('admin') }}" />
         </x-slot:actions>
     </x-header>
     <x-card title="{!! __('Edit a product') !!}">

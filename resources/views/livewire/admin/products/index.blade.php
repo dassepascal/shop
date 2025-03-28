@@ -37,10 +37,17 @@ new #[Layout('components.layouts.admin')] class extends Component {
     public function deleteProduct(int $id): void
     {
         $product = Product::findOrFail($id);
+
+        // Supprimer les images associées dans ProductImages
+        $product->images()->delete();
+
+        // Supprimer le produit lui-même
         $product->delete();
+
         $this->success(__('Product deleted successfully.'));
         $this->resetPage();
     }
+
     public function updated($property): void
     {
         if (! is_array($property) && $property != "") {
