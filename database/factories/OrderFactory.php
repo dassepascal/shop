@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -37,7 +38,7 @@ class OrderFactory extends Factory
             $invoice_id = null;
             $invoice_number = null;
         }
-        
+        $createdAt = Carbon::instance(fake()->dateTimeBetween('-3 years'))->setTimezone('UTC');
         return [
             'reference' => strtoupper(str()->random(8)),
             'shipping' => $pick ? 0 : mt_rand (500, 1500) / 100,
@@ -50,7 +51,8 @@ class OrderFactory extends Factory
             'tax' => [0, .2][mt_rand(0, 1)],
             'invoice_id' => $invoice_id,
             'invoice_number' => $invoice_number,
-            'created_at' => fake()->dateTimeBetween('-3 years'),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt, // Ajouter updated_at pour cohérence
         ];
     }
 }
