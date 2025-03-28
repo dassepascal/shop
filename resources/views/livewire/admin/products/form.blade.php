@@ -24,7 +24,7 @@
         <label class="block text-sm font-medium text-gray-700">{{ __('Images') }}</label>
 
         @if($existingImages && $existingImages->isNotEmpty())
-            <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex flex-wrap gap-4 mb-4" wire:ignore.self>
                 @foreach($existingImages as $image)
                     <div class="relative">
                         <img src="{{ asset('storage/photos/' . $image->image) }}" class="h-40 rounded" alt="{{ __('Product image') }}">
@@ -50,7 +50,6 @@
         <small class="text-gray-500">{!! __('Click to upload additional images') !!}</small>
     </div>
 
-    <!-- Bouton Save -->
     <x-slot:actions>
         <x-button
             label="{{ __('Save') }}"

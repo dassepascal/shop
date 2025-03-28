@@ -35,8 +35,8 @@ new #[Title('Product edition')] #[Layout('components.layouts.admin')] class exte
         if ($key !== false) {
             unset($this->existingImagesToKeep[$key]);
             $this->existingImagesToKeep = array_values($this->existingImagesToKeep); // Réindexer le tableau
+            $this->dispatch('image-removed'); // Événement pour forcer la mise à jour du frontend
         }
-        // dd('After removal:', $this->existingImagesToKeep); // Débogage
     }
 
     public function save(): void
@@ -77,7 +77,7 @@ new #[Title('Product edition')] #[Layout('components.layouts.admin')] class exte
     {
         return [
             'availableFeatures' => $this->availableFeatures,
-            'existingImages' => $this->product->images,
+            'existingImages' => $this->product->images->filter(fn($image) => in_array($image->image, $this->existingImagesToKeep)),
         ];
     }
 };
