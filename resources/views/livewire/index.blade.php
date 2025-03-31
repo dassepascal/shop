@@ -4,13 +4,56 @@ use Livewire\Volt\Component;
 use App\Models\Product;
 
 new class extends Component {
-    public string $group = ''; // Ajout de la propriété group pour l'accordéon
+    public string $group = ''; // Propriété pour l'accordéon
+
+    // Propriétés pour les filtres de recherche
+    public string $searchDiameter = '';
+    public string $searchSkin = '';
+    public string $searchColor = '';
+    public string $searchMaterial = '';
 
     public function with(): array
     {
+        $query = Product::whereActive(true)->with(['images', 'features']);
+
+        // Appliquer les filtres si les champs ne sont pas vides
+        if ($this->searchDiameter) {
+            $query->whereHas('features', function ($q) {
+                $q->where('name', 'like', '%diamètre%')
+                  ->where('value', 'like', '%' . $this->searchDiameter . '%');
+            });
+        }
+        if ($this->searchSkin) {
+            $query->whereHas('features', function ($q) {
+                $q->where('name', 'like', '%peau%')
+                  ->where('value', 'like', '%' . $this->searchSkin . '%');
+            });
+        }
+        if ($this->searchColor) {
+            $query->whereHas('features', function ($q) {
+                $q->where('name', 'like', '%couleur%')
+                  ->where('value', 'like', '%' . $this->searchColor . '%');
+            });
+        }
+        if ($this->searchMaterial) {
+            $query->whereHas('features', function ($q) {
+                $q->where('name', 'like', '%matière%')
+                  ->where('value', 'like', '%' . $this->searchMaterial . '%');
+            });
+        }
+
         return [
-            'products' => Product::whereActive(true)->with(['images', 'features'])->get(), // Charger les images et les caractéristiques
+            'products' => $query->get(),
         ];
+    }
+
+    // Méthode pour réinitialiser les filtres
+    public function resetFilters(): void
+    {
+        $this->searchDiameter = '';
+        $this->searchSkin = '';
+        $this->searchColor = '';
+        $this->searchMaterial = '';
     }
 };
 ?>
@@ -22,7 +65,36 @@ new class extends Component {
     <x-card class="w-full shadow-md shadow-gray-500" shadow separator>
         {!! $shop->home !!}
     </x-card>
-    <br>
+
+    <!-- Barre de recherche avec filtres horizontaux et bouton Reset aligné -->
+    <div class="mt-4 mb-6 flex flex-wrap gap-4 items-end">
+        <x-input
+            wire:model.live="searchDiameter"
+            label="{{ __('Diameter') }}"
+            placeholder="{{ __('Filter by diameter') }}"
+            class="flex-1 min-w-[150px]"
+        />
+        <x-input
+            wire:model.live="searchSkin"
+            label="{{ __('Skin') }}"
+            placeholder="{{ __('Filter by skin') }}"
+            class="flex-1 min-w-[150px]"
+        />
+        <x-input
+            wire:model.live="searchColor"
+            label="{{ __('Color') }}"
+            placeholder="{{ __('Filter by color') }}"
+            class="flex-1 min-w-[150px]"
+        />
+        <x-input
+            wire:model.live="searchMaterial"
+            label="{{ __('Material') }}"
+            placeholder="{{ __('Filter by material') }}"
+            class="flex-1 min-w-[150px]"
+        />
+        <x-button wire:click="resetFilters" class="btn-secondary" icon="o-x-mark">{{ __('Reset') }}</x-button>
+    </div>
+
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         @foreach ($products as $product)
             @php
