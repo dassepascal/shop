@@ -6,7 +6,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 trait ManageProduct
 {
     public string $name = '';
-    public TemporaryUploadedFile|string|null $image = null;
+    public array $images = []; // Remplacer $image par $images pour gérer plusieurs fichiers
     public string $description = '';
     public float $price = 0;
     public float $weight = 0;
@@ -23,7 +23,8 @@ trait ManageProduct
     {
         $rules = [
             'name' => 'required|max:255',
-            'image' => $this->image instanceof TemporaryUploadedFile ? 'image|mimes:jpeg,png,jpg,gif' : 'required',
+'images' => 'nullable|array', // Les images sont optionnelles
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // Validation pour chaque fichier (10MB max)
             'description' => 'required|string|max:65535',
             'price' => 'required|numeric|min:0|regex:/^(\d+(?:[\.\,]\d{1,2})?)$/',
             'weight' => 'required|numeric|min:0|regex:/^(\d+(?:[\.\,]\d{1,3})?)$/',

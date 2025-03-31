@@ -21,9 +21,10 @@ return new class extends Migration
             $table->integer('quantity_alert')->default(10);
             $table->string('image')->nullable();
             $table->text('description');
-            $table->decimal('promotion_price')->nullable(); 
-            $table->date('promotion_start_date')->nullable(); 
-            $table->date('promotion_end_date')->nullable(); 
+            $table->decimal('promotion_price')->nullable();
+            $table->date('promotion_start_date')->nullable();
+            $table->date('promotion_end_date')->nullable();
+            $table->string('unique_id')->unique();
             $table->timestamps();
         });
     }
