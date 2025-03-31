@@ -4,13 +4,16 @@ use Livewire\Volt\Component;
 use App\Models\Product;
 
 new class extends Component {
+    public string $group = ''; // Ajout de la propriété group pour l'accordéon
+
     public function with(): array
     {
         return [
-            'products' => Product::whereActive(true)->with('images')->get(), // Charger les images
+            'products' => Product::whereActive(true)->with(['images', 'features'])->get(), // Charger les images et les caractéristiques
         ];
     }
-}; ?>
+};
+?>
 
 <div class="container mx-auto">
     @if (session('registered'))
@@ -32,7 +35,7 @@ new class extends Component {
             }
             $firstImage = $product->images->first()?->image ?? 'ask.png'; // Première image ou image par défaut
             @endphp
-            <x-card class="shadow-md transition duration-500 ease-in-out shadow-gray-500 hover:shadow-xl hover:shadow-gray-500 flex flex-col justify-between">
+            <x-card class="shadow-md transition duration-500 ease-in-out shadow-gray-500 hover:shadow-xl hover:shadow-gray-500 flex flex-col justify-between relative">
                 <b>{!! $product->name !!} :</b>
                 {!! $titleContent !!}<br>
 
@@ -41,13 +44,27 @@ new class extends Component {
                 @endunless
 
                 <x-slot:figure>
-                    @if ($product->quantity)
-                        <a href="{{ route('products.show', $product) }}">
-                    @endif
-                    <img src="{{ asset('storage/photos/' . $firstImage) }}" alt="{!! $product->name !!}" class="max-h-40 rounded" />
-                    @if ($product->quantity)
-                        </a>
-                    @endif
+                    <div class="relative group">
+                        @if ($product->quantity)
+                            <a href="{{ route('products.show', $product) }}" class="block">
+                                <img src="{{ asset('storage/photos/' . $firstImage) }}" alt="{!! $product->name !!}" class="w-full object-cover" />
+                            </a>
+                        @else
+                            <img src="{{ asset('storage/photos/' . $firstImage) }}" alt="{!! $product->name !!}" class="w-full object-cover" />
+                        @endif
+
+                        <!-- Conteneur pour les caractéristiques avec titre, affiché au survol -->
+                        @if($product->features->isNotEmpty())
+                            <div class="absolute inset-0 bg-black bg-opacity-75 text-white p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center pointer-events-none">
+                                <h3 class="text-lg font-semibold mb-2">{{ __('Features') }}</h3>
+                                <ul class="list-disc list-inside text-sm">
+                                    @foreach($product->features as $feature)
+                                        <li>{{ $feature->name }} : {{ $feature->pivot->value }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
                 </x-slot:figure>
             </x-card>
         @endforeach
