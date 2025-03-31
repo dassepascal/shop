@@ -43,7 +43,7 @@ new class extends Component {
 };
 ?>
 
-<div class="container p-5 mx-auto bg-red-500">
+<div class="container p-5 mx-auto ">
     <div class="grid gap-10 lg:grid-cols-2">
         <div>
             <!-- Carrousel d'images -->
